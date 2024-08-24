@@ -1,5 +1,5 @@
+import pytest
 from main import BooksCollector
-
 
 class TestBooksCollector:
 
@@ -22,10 +22,18 @@ class TestBooksCollector:
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
 
-    def test_add_new_book_add_book(self):
+    @pytest.mark.parametrize('book',
+        [
+         '',
+         'Гордость и предубеждение и зомби',
+         'Как я перестал бояться и полюбил атомную бомбу'
+        ]
+        )
+    def test_add_new_book_add_book(self, book):
         collector = BooksCollector()
-        collector.add_new_book('Гордость и предубеждение и зомби')
-        assert len(collector.get_books_genre()) == 1
+        collector.add_new_book(book)
+        lenght = 0 if len(book) == '' or len(book) >= 41 else 1
+        assert len(collector.get_books_genre()) == lenght
 
     def test_set_book_genre_setted_true(self):
         collector = BooksCollector()
@@ -54,7 +62,19 @@ class TestBooksCollector:
         result = ['Гордость и предубеждение и зомби']
         assert collector.get_list_of_favorites_books() == result
 
+    def test_delete_book_from_favorites_true(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        # collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        collector.add_book_in_favorites('Гордость и предубеждение и зомби')
+        collector.delete_book_from_favorites('Гордость и предубеждение и зомби')
+        result = []
+        assert collector.get_list_of_favorites_books() == result
 
-
-
-
+    def test_get_list_of_favorites_books_filled(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        # collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        collector.add_book_in_favorites('Гордость и предубеждение и зомби')
+        result = ['Гордость и предубеждение и зомби']
+        assert collector.get_list_of_favorites_books() == result
