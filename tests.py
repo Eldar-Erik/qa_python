@@ -27,3 +27,34 @@ class TestBooksCollector:
         collector.add_new_book('Гордость и предубеждение и зомби')
         assert len(collector.get_books_genre()) == 1
 
+    def test_set_book_genre_setted_true(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        assert collector.get_book_genre('Гордость и предубеждение и зомби') == 'Комедии'
+
+    def test_get_book_genre_genre_by_name(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        assert collector.get_book_genre('Гордость и предубеждение и зомби') == 'Комедии'
+
+    def test_get_books_for_children_added_to_list(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        result = ['Гордость и предубеждение и зомби']
+        assert collector.get_books_for_children() == result
+
+    def test_add_book_in_favorites_true(self):
+        collector = BooksCollector()
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        #collector.set_book_genre('Гордость и предубеждение и зомби', 'Комедии')
+        collector.add_book_in_favorites('Гордость и предубеждение и зомби')
+        result = ['Гордость и предубеждение и зомби']
+        assert collector.get_list_of_favorites_books() == result
+
+
+
+
+
