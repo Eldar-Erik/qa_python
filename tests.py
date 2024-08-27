@@ -7,24 +7,17 @@ class TestBooksCollector:
         collector = BooksCollector()
         collector.add_new_book('Гордость и предубеждение и зомби')
         collector.add_new_book('Что делать, если ваш кот хочет вас убить')
-        assert len(collector.get_books_rating()) == 2
+        assert len(collector.get_books_genre()) == 2
 
-
-    @pytest.mark.parametrize('book',
-        [
-         '',
-         'Гордость и предубеждение и зомби',
-         'Как я перестал бояться и полюбил атомную бомбу'
-        ]
-        )
-    def test_add_new_book_add_book(self, book):
+    def test_add_new_book_add_book(self):
         collector = BooksCollector()
-        collector.add_new_book(book)
-        if len(book) == 0 or len(book) >= 41:
-            expect = 0
-        else:
-            expect = 1
-        assert len(collector.get_books_genre()) == expect
+        collector.add_new_book('Гордость и предубеждение и зомби')
+        assert len(collector.get_books_genre()) == 1
+
+    def test_add_new_book_not_add_book_namelengh_more_then_41(self):
+        collector = BooksCollector()
+        collector.add_new_book('Как я перестал бояться и полюбил атомную бомбу')
+        assert len(collector.get_books_genre()) == 0
 
     @pytest.mark.parametrize(
         'book, genre',
@@ -56,37 +49,35 @@ class TestBooksCollector:
         'book, genre',
         [
             ['Гордость и предубеждение и зомби', 'Комедии'],
-            ['Остров сокровищ', 'Мультфильмы'],
-            ['Сияние', 'Ужасы']
+            ['Остров сокровищ', 'Мультфильмы']
         ])
     def test_get_books_for_children_added_to_list(self, book, genre):
         collector = BooksCollector()
         collector.add_new_book(book)
         collector.set_book_genre(book, genre)
-        if genre in collector.genre_age_rating:
-            expect = []
-        else:
-            expect = [book]
-        assert collector.get_books_for_children() == expect
+        assert collector.get_books_for_children() == [book]
+
+    def test_get_books_for_children_not_added_to_list_by_genre(self):
+        collector = BooksCollector()
+        collector.add_new_book('Сияние')
+        collector.set_book_genre('Сияние', 'Ужасы')
+        assert collector.get_books_for_children() == []
 
     def test_add_book_in_favorites_true(self):
         collector = BooksCollector()
         collector.add_new_book('Гордость и предубеждение и зомби')
         collector.add_book_in_favorites('Гордость и предубеждение и зомби')
-        expect = ['Гордость и предубеждение и зомби']
-        assert collector.get_list_of_favorites_books() == expect
+        assert collector.get_list_of_favorites_books() == ['Гордость и предубеждение и зомби']
 
     def test_delete_book_from_favorites_true(self):
         collector = BooksCollector()
         collector.add_new_book('Гордость и предубеждение и зомби')
         collector.add_book_in_favorites('Гордость и предубеждение и зомби')
         collector.delete_book_from_favorites('Гордость и предубеждение и зомби')
-        expect = []
-        assert collector.get_list_of_favorites_books() == expect
+        assert collector.get_list_of_favorites_books() == []
 
     def test_get_list_of_favorites_books_filled(self):
         collector = BooksCollector()
         collector.add_new_book('Гордость и предубеждение и зомби')
         collector.add_book_in_favorites('Гордость и предубеждение и зомби')
-        expect = ['Гордость и предубеждение и зомби']
-        assert collector.get_list_of_favorites_books() == expect
+        assert collector.get_list_of_favorites_books() == ['Гордость и предубеждение и зомби']
